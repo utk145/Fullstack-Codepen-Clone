@@ -6,7 +6,7 @@ function App() {
 
 
   return (
-    <div className="w-screen h-screen flex items-start justify-start overflow-hidden bg-[#131417]">
+    <div className="w-screen h-screen flex items-start justify-start overflow-hidden bg-[#131417] bg-gradient-to-tr from-[#1A1A4E] to-[#292A75]">
       <Routes>
         <Route path="/home/*" element={<Home />} />
 
