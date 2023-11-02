@@ -18,7 +18,7 @@ const AuthInput = ({ what, isPasswordField }) => {
                 )}
 
 
-                <input type={isPasswordField  ? `password` : `text`} placeholder={"Enter your " + what.toLowerCase() + " here"} className="px-4 py-1 flex-1 text-lg outline-none bg-transparent text-black" value={value} onChange={(e) => setValue(e.target.value)} />
+                <input type={isPasswordField && !showPass ? `password` : `text`} placeholder={"Enter your " + what.toLowerCase() + " here"} className="px-4 py-1 flex-1 text-lg outline-none bg-transparent text-black" value={value} onChange={(e) => setValue(e.target.value)} />
 
 
                 {isPasswordField && <motion.div whileTap={{ scale: .5 }} className='cursor-pointer' onClick={() => setShowPass(!showPass)} >
