@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import AuthInput from './AuthInput'
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const SigningUp = () => {
 
@@ -7,6 +9,7 @@ const SigningUp = () => {
     const [password, setPassword] = useState("");
     const [isPasswordField, setIsPasswordField] = useState(true);
     const [getIsEmailValidStatus, setgetIsEmailValidStatus] = useState(false); // Based on this only we'll proceed to login
+    const [isTobeLogin, setIsTobeLogin] = useState(false);
 
     // console.log("getIsEmailValidStatus is "+getIsEmailValidStatus);
 
@@ -26,7 +29,17 @@ const SigningUp = () => {
                     {/* Alert */}
 
                     {/* Login button  */}
+                    {isTobeLogin ?
+                        <motion.div whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
+                            <span className='text-white text-xl'>Login</span>
+                        </motion.div>
+                        :
+                        <motion.div whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
+                            <span className='text-white text-xl'>Signup</span>
+                        </motion.div>
+                    }
 
+                    <p className='text-md flex gap-3 items-center justify-center'>{!isTobeLogin ? `Already have an account?` : `Don't have an account?`} <span className='text-white cursor-pointer' onClick={() => setIsTobeLogin(!isTobeLogin)}>{!isTobeLogin ? `Login here.` : `Create now.`}</span> </p>
 
 
                     {/* Signin with google  */}
