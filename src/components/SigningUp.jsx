@@ -6,7 +6,9 @@ const SigningUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isPasswordField, setIsPasswordField] = useState(true);
+    const [getIsEmailValidStatus, setgetIsEmailValidStatus] = useState(false); // Based on this only we'll proceed to login
 
+    // console.log("getIsEmailValidStatus is "+getIsEmailValidStatus);
 
     return (
         <div className='text-[#868CA0] w-full py-6'>
@@ -16,10 +18,10 @@ const SigningUp = () => {
                     {/* Signup Form */}
 
                     {/* Email */}
-                    <AuthInput what="Email" isPasswordField={false} key={"foremail"} setStateFxn={setEmail}/>
+                    <AuthInput what="Email" isPasswordField={false} key={"foremail"} setStateFxn={setEmail} setgetIsEmailValidStatus={setgetIsEmailValidStatus} />
 
                     {/* Password */}
-                    <AuthInput what="Password" isPasswordField={isPasswordField} key={"forpass"} setStateFxn={setPassword}/>
+                    <AuthInput what="Password" isPasswordField={isPasswordField} key={"forpass"} setStateFxn={setPassword} />
 
                     {/* Alert */}
 
@@ -29,9 +31,9 @@ const SigningUp = () => {
 
                     {/* Signin with google  */}
 
-                    
+
                     {/* Signin with github  */}
-                    
+
 
                 </div>
             </div>
