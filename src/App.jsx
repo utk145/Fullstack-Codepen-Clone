@@ -1,8 +1,23 @@
-import { Navigate, Route, Routes } from "react-router-dom"
+import { useEffect } from "react"
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 import Home from "./components/Home"
+import { auth } from "./configuration/firebase.config"
 
 
 function App() {
+
+  const navigate = useNavigate();
+
+  // Getting info of logged in individual
+  useEffect(() => {
+    const unsub = auth.onAuthStateChanged(userCred => {
+      if (userCred) {
+        console.log(userCred?.providerData[0]);
+      } else {
+        navigate("/home/auth", { replace: true });
+      }
+    })
+  }, [])
 
 
   return (
@@ -10,10 +25,10 @@ function App() {
       <Routes>
         <Route path="/home/*" element={<Home />} />
 
-        
+
 
         {/* If no route path matches*/}
-        <Route path="*" element={<Navigate to="/home"/>}/>
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </div>
   )
