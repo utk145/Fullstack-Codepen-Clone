@@ -3,6 +3,8 @@ import AuthInput from './AuthInput'
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { signInWithGithub, signInWithGoogle } from '../utils/helpers';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../configuration/firebase.config';
 
 const SigningUp = () => {
 
@@ -13,6 +15,18 @@ const SigningUp = () => {
     const [isTobeLogin, setIsTobeLogin] = useState(false);
 
     // console.log("getIsEmailValidStatus is "+getIsEmailValidStatus);
+
+    const createNewUserWithEmailAndPass = async () => {
+        if (getIsEmailValidStatus) {
+            await createUserWithEmailAndPassword(auth, email, password)
+                .then(userCred => {
+                    if (userCred) {
+                        console.log(userCred.user);
+                    }
+                })
+                .catch((error) => console.log(error.message))
+        }
+    }
 
     return (
         <div className='text-[#868CA0] w-full py-6'>
@@ -35,7 +49,7 @@ const SigningUp = () => {
                             <span className='text-white text-xl'>Login</span>
                         </motion.div>
                         :
-                        <motion.div whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
+                        <motion.div onClick={createNewUserWithEmailAndPass} whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
                             <span className='text-white text-xl'>Signup</span>
                         </motion.div>
                     }
