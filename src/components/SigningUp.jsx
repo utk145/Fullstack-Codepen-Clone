@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import AuthInput from './AuthInput'
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signInWithGithub, signInWithGoogle } from '../utils/helpers';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../configuration/firebase.config';
 
 const SigningUp = () => {
@@ -15,7 +15,7 @@ const SigningUp = () => {
     const [isTobeLogin, setIsTobeLogin] = useState(false);
 
     // console.log("getIsEmailValidStatus is "+getIsEmailValidStatus);
-
+    const navigate = useNavigate();
     const createNewUserWithEmailAndPass = async () => {
         if (getIsEmailValidStatus) {
             await createUserWithEmailAndPassword(auth, email, password)
@@ -27,6 +27,20 @@ const SigningUp = () => {
                 .catch((error) => console.log(error.message))
         }
     }
+
+
+    const loginWithEmailAnsPassword = async () => {
+        if (getIsEmailValidStatus) {
+            await signInWithEmailAndPassword(auth, email, password)
+                .then(useCred => {
+                    if (useCred) {
+                        navigate("/home", { replace: true });
+                    }
+                })
+                .catch((error)=>console.log(error))
+        }
+    }
+
 
     return (
         <div className='text-[#868CA0] w-full py-6'>
@@ -45,7 +59,7 @@ const SigningUp = () => {
 
                     {/* Login button  */}
                     {isTobeLogin ?
-                        <motion.div whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
+                        <motion.div onClick={loginWithEmailAnsPassword} whileTap={{ scale: 0.8 }} className='w-full flex py-3 items-center justify-center bg-[rgb(32,172,248)] rounded-lg cursor-pointer'>
                             <span className='text-white text-xl'>Login</span>
                         </motion.div>
                         :
