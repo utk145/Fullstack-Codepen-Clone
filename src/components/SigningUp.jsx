@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AuthInput from './AuthInput'
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithGithub, signInWithGoogle } from '../utils/helpers';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -13,6 +13,9 @@ const SigningUp = () => {
     const [isPasswordField, setIsPasswordField] = useState(true);
     const [getIsEmailValidStatus, setgetIsEmailValidStatus] = useState(false); // Based on this only we'll proceed to login
     const [isTobeLogin, setIsTobeLogin] = useState(false);
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
 
     // console.log("getIsEmailValidStatus is "+getIsEmailValidStatus);
     const navigate = useNavigate();
@@ -34,10 +37,26 @@ const SigningUp = () => {
             await signInWithEmailAndPassword(auth, email, password)
                 .then(useCred => {
                     if (useCred) {
+                        console.log(useCred);
                         navigate("/home", { replace: true });
                     }
                 })
-                .catch((error)=>console.log(error))
+                .catch((error) => {
+                    console.log(error.message);
+                    if (error.message.includes("invalid-login-credentials")) {
+                        setAlert(true);
+                        setAlertMessage("User doesn't exist")
+                    } else if (error.message.includes("wrong-password")) {
+                        setAlert(true);
+                        setAlertMessage("Password Mismatch")
+                    } else {
+                        setAlert(true);
+                        setAlertMessage("Account disabled due to multiple\n failed attempts")
+                    }
+                    setInterval(() => {
+                        setAlert(false);
+                    }, 5000);
+                })
         }
     }
 
@@ -56,6 +75,20 @@ const SigningUp = () => {
                     <AuthInput what="Password" isPasswordField={isPasswordField} key={"forpass"} setStateFxn={setPassword} />
 
                     {/* Alert */}
+                    <AnimatePresence>
+                        {/* {alert && <motion.p className='text-[#f2ff37]' key={"AlertMessage"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{alertMessage}</motion.p>} */}
+                        {alert && (
+                            <motion.p className='text-[#f2ff37] flex text-center' key={"AlertMessage"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                {alertMessage.split('\n').map((line, index) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        {index < alertMessage.split('\n').length - 1 && <br />}
+                                    </React.Fragment>
+                                ))}
+                            </motion.p>
+                        )}
+
+                    </AnimatePresence>
 
                     {/* Login button  */}
                     {isTobeLogin ?
