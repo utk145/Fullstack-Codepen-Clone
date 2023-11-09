@@ -1,15 +1,18 @@
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 import Home from "./components/Home"
 import Loader from "./components/Loader";
 import { auth, db } from "./configuration/firebase.config"
+import { SET_USER } from "./context/actions/userActions";
 
 
 function App() {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
 
   // Getting info of logged in individual
@@ -21,7 +24,8 @@ function App() {
         addDoc(collection(db, "users"), userCred?.providerData[0])
           .then(() => {
             // Here the data will be dispatched to redux store 
-
+            dispatch(SET_USER(userCred?.providerData[0]))
+            navigate("/home/projects", { replace: true });
           })
       } else {
         navigate("/home/auth", { replace: true });

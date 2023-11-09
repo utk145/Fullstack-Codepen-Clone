@@ -3,11 +3,15 @@ import { motion } from "framer-motion"
 import { Link, Route, Routes } from 'react-router-dom';
 import SigningUp from './SigningUp';
 import AllProjects from './AllProjects';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
 
     const [showSideMenu, setShowSideMenu] = useState(false);
-    const [user, setUser] = useState(null); // This will be coming from the redux-toolkit
+    // const [user, setUser] = useState(null); // This will be coming from the redux-toolkit.
+    // The above state was default but Now it should come from the reducer
+
+    const user = useSelector(state => state?.user.user);
 
     return (
         <>
