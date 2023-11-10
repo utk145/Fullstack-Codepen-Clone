@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { Link, Route, Routes } from 'react-router-dom';
 import SigningUp from './SigningUp';
 import AllProjects from './AllProjects';
 import { useSelector } from 'react-redux';
+import { NavMenuItems, signingOut } from '../utils/helpers';
 
 const Home = () => {
 
@@ -11,7 +12,8 @@ const Home = () => {
     // const [user, setUser] = useState(null); // This will be coming from the redux-toolkit.
     // The above state was default but Now it should come from the reducer
 
-    const user = useSelector(state => state?.user.user);
+    const user = useSelector(state => state?.user?.user);
+    const [navMenuDisplay, setnavMenuDisplay] = useState(false);
 
     return (
         <>
@@ -37,11 +39,11 @@ const Home = () => {
                     {user && (
                         <Link className="flex gap-3 items-center justify-center" to={"/home/allProjects"}>
                             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="text-xl text-[#868CA0]" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
-                            <span className='text-[#868CA0] text-xl'>Home</span>
+                            <span className='text-[#868CA0] text-xl hover:text-white'>Home</span>
                         </Link>
                     )}
                     <Link className="flex gap-3 items-center justify-center" to={"https://github.com/utk145/Fullstack-Codepen-Clone"} target="_blank">
-                        <span className='text-[#868CA0] text-xl italic'>@utk145</span>
+                        <span className='text-[#868CA0] text-xl italic hover:text-white'>@utk145</span>
                     </Link>
                 </div>
 
@@ -61,8 +63,36 @@ const Home = () => {
                             </Link>
                         </motion.div>
                     ) : (
-                        <div className="">
-                            <h2>This profile icon to be handled</h2>
+                        <div className="flex items-center justify-center gap-4 relative">
+                            <div className='w-14 h-14 flex items-center justify-center rounded-full overflow-hidden cursor-pointer bg-[#be7b16]'>
+                                {user?.photoURL ? <>
+                                    <motion.img whileHover={{ scale: 1.2 }} src={user?.photoURL} alt={user?.displayName} referrerPolicy={"no-referrer"} className="w-full h-full object-cover" />
+                                </> : <>
+                                    <p className='capitalize text-2xl font-semibold p-0'>{user?.email[0]}</p>
+                                </>}
+                            </div>
+                            <motion.div whileTap={{ scale: .8 }} className="px-4 py-4 rounded-lg flex items-center justify-center bg-[#1D1D56] cursor-pointer" onClick={() => setnavMenuDisplay(!navMenuDisplay)}>
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="text-[#868CA0] " height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg>
+                            </motion.div>
+
+                            {/* Dropdown */}
+                            <AnimatePresence>
+                                {navMenuDisplay && (
+                                    <motion.div className='backdrop-blur-sm bg-[rgba(29,29,86,.4)] absolute top-16 right-0 px-4 py-3 rounded-md shadow-xl z-10 flex flex-col items-start justify-start gap-4 min-w-[225px] ' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }}>
+                                        {NavMenuItems && NavMenuItems.map(item => (
+                                            <Link to={item.uri} key={item.id} className="flex items-center w-full justify-start px-2 py-2 rounded-md gap-3 text-[#868CA0] hover:bg-[#1B1B52]">
+                                                <div dangerouslySetInnerHTML={{ __html: item.svg }} className="text-lg" />
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        ))}
+                                        <motion.p className='flex items-center w-full justify-start px-2 py-2 rounded-md gap-3 text-[#868CA0] hover:bg-[#1B1B52] cursor-pointer' whileTap={{ scale: .9 }} onClick={signingOut}>
+                                            <svg viewBox="0 0 24 24" fill="currentColor" height="1em" width="1em" className="text-lg" ><path d="M4 12a1 1 0 001 1h7.59l-2.3 2.29a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00.21-.33 1 1 0 000-.76 1 1 0 00-.21-.33l-4-4a1 1 0 10-1.42 1.42l2.3 2.29H5a1 1 0 00-1 1zM17 2H7a3 3 0 00-3 3v3a1 1 0 002 0V5a1 1 0 011-1h10a1 1 0 011 1v14a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-2 0v3a3 3 0 003 3h10a3 3 0 003-3V5a3 3 0 00-3-3z"></path></svg>
+                                            Logout
+                                        </motion.p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
                         </div>
                     )}
                 </div>
