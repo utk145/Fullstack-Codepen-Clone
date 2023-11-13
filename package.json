@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.1",
+    "@uiw/codemirror-theme-tomorrow-night-blue": "^4.21.20",
+    "@uiw/react-codemirror": "^4.21.20",
     "firebase": "^10.5.2",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
@@ -17,6 +20,7 @@
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.17.0",
     "react-spinners": "^0.13.8",
+    "react-split-pane": "^0.1.92",
     "redux": "^4.2.1"
   },
   "devDependencies": {

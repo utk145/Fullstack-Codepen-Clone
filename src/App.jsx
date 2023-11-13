@@ -2,6 +2,7 @@ import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
+import CreateNewProj from "./components/CreateNewProj";
 import Home from "./components/Home"
 import Loader from "./components/Loader";
 import { auth, db } from "./configuration/firebase.config"
@@ -56,6 +57,7 @@ function App() {
         <div className="w-screen h-screen flex items-start justify-start overflow-hidden bg-[#131417] bg-gradient-to-tr from-[#1A1A4E] to-[#292A75]">
           <Routes>
             <Route path="/home/*" element={<Home />} />
+            <Route path='/create' element={<CreateNewProj />} />
 
 
 
