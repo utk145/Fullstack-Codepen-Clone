@@ -9,6 +9,28 @@ const CreateNewProj = () => {
     const [htmlVal, sethtmlVal] = useState(``);
     const [cssVal, setcssVal] = useState(``);
     const [jsVal, setjsVal] = useState(``);
+    const [finalSrcCodeOutput, setfinalSrcCodeOutput] = useState(``);
+
+    const updateResFunction = () => {
+        const mergedOutput = `
+            <html>
+                <body>${htmlVal}</body>
+                <style>${cssVal}</style>
+                <script>${jsVal}</script>
+            </html>
+        `;
+        setfinalSrcCodeOutput(mergedOutput);
+    }
+
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            updateResFunction()
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [htmlVal, cssVal, jsVal])
+
 
     return (
         <>
@@ -30,7 +52,10 @@ const CreateNewProj = () => {
                                 </div>
                                 <div className='w-full px-0'>
                                     {/* Code mirror area */}
-                                    <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={htmlVal} onChange={(val, viewUpdate) => { sethtmlVal(val); console.log("html val is " + val); }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
+                                    <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={htmlVal} onChange={(val, viewUpdate) => {
+                                        sethtmlVal(val);
+                                        // console.log("html val is " + val);
+                                    }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
                                 </div>
                             </div>
 
@@ -46,7 +71,10 @@ const CreateNewProj = () => {
                                     {/* Code mirror area */}
                                     <div className='w-full px-0'>
                                         {/* Code mirror area */}
-                                        <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={cssVal} onChange={(val, viewUpdate) => { setcssVal(val); console.log("css val is " + val); }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
+                                        <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={cssVal} onChange={(val, viewUpdate) => {
+                                            setcssVal(val);
+                                            // console.log("css val is " + val);
+                                        }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
                                     </div>
 
                                 </div>
@@ -61,7 +89,10 @@ const CreateNewProj = () => {
                                     {/* Code mirror area */}
                                     <div className='w-full px-0'>
                                         {/* Code mirror area */}
-                                        <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={jsVal} onChange={(val, viewUpdate) => { setjsVal(val); console.log("js val is " + val); }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
+                                        <CodeMirror height="600px" extensions={[javascript({ jsx: true })]} value={jsVal} onChange={(val, viewUpdate) => {
+                                            setjsVal(val);
+                                            // console.log("js val is " + val);
+                                        }} theme={tomorrowNightBlue} className='border-t-2 border-[#092a63]' />
                                     </div>
 
                                 </div>
@@ -70,8 +101,15 @@ const CreateNewProj = () => {
                         </SplitPane>
 
                         {/* Display area */}
-                        <div className='bg-white' style={{ overflow: "hidden",height:"100%" }}>
-                        
+                        <div className='bg-white' style={{ overflow: "hidden", height: "100%" }}>
+                            <iframe
+                                srcDoc={finalSrcCodeOutput}
+                                title="output"
+                                sandbox="allow-scripts"
+                                width="100%"
+                                height="100%"
+                                style={{ border: "none" }}
+                            />
                         </div>
                     </SplitPane>
                 </div>
