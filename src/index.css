@@ -79,3 +79,7 @@ body {
 .CodeMirror {
     padding-top: 0 !important;
 }
+
+.SplitPane.horizontal {
+    top: 100px !important;
+}

@@ -3,6 +3,10 @@ import SplitPane from 'react-split-pane'
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { tomorrowNightBlue } from "@uiw/codemirror-theme-tomorrow-night-blue";
+import { Link } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { NavMenuItems, signingOut } from '../utils/helpers';
 
 
 const CreateNewProj = () => {
@@ -10,7 +14,8 @@ const CreateNewProj = () => {
     const [cssVal, setcssVal] = useState(``);
     const [jsVal, setjsVal] = useState(``);
     const [finalSrcCodeOutput, setfinalSrcCodeOutput] = useState(``);
-
+    const [isTitle, setIsTitle] = useState();
+    const [title, setTitle] = useState("Untitled");
     const updateResFunction = () => {
         const mergedOutput = `
             <html>
@@ -31,11 +36,83 @@ const CreateNewProj = () => {
         return () => clearTimeout(timeout);
     }, [htmlVal, cssVal, jsVal])
 
+    const user = useSelector(state => state?.user?.user);
+    const [navMenuDisplay, setnavMenuDisplay] = useState(false);
+
+    
 
     return (
         <>
             <div className='flex flex-col w-screen min-h-screen items-start justify-start overflow-hidden '>
                 {/* Header section */}
+                <header className='w-full flex items-center justify-between px-12 py-4'>
+                    <div className='flex items-center justify-center gap-6'>
+                        <Link to="/home">
+                            <img src="/logo-image-pen.webp" alt="logoImage" className='object-contain w-40 h-auto' />
+                        </Link>
+                        <div className='flex flex-col items-start justify-start '>
+                            <div className='flex items-center justify-center gap-3'>
+                                <AnimatePresence>
+                                    {isTitle ? <>
+                                        <motion.input key={"titleinp"} type={"text"} placeholder={"Untitled"} value={title} onChange={(e) => setTitle(e.target.value)} className=' px-3 py-2 outline-none border-none bg-transparent text-[#868CA0] text-base ' />
+
+                                    </> : <>
+                                        <motion.p key={"titlab"} className='px-3 py-2 text-white text-lg'>
+                                            {title}
+                                        </motion.p>
+                                    </>}
+                                </AnimatePresence>
+                                <AnimatePresence>
+                                    {isTitle ? <>
+                                        <motion.div key={"check"} whileTap={{ scale: .9 }} className='cursor-pointer' onClick={() => setIsTitle(false)}>
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="text-2xl text-emerald-500" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>
+                                        </motion.div>
+                                    </> : <>
+                                        <motion.div key={"edit"} whileTap={{ scale: .9 }} className='cursor-pointer' onClick={() => setIsTitle(true)}>
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="text-2xl text-[#868CA0]" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83a.996.996 0 000-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path></svg>
+                                        </motion.div>
+                                    </>}
+                                </AnimatePresence>
+                            </div>
+                            <div className='flex items-center justify-center px-3 gap-2 -mt-2 text-[#868CA0]'>
+                                <p>By <span className='text-emerald-400 italic'>{user?.displayName ? user?.displayName : user?.email.split("@")[0]}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    {user && <>
+                        <div className='flex items-center justify-center gap-4 relative'>
+                            <motion.button
+                                className='bg-[#868CA0] px-4 py-3 rounded-md' title="Don't forget to click this to save all of your code " whileTap={{ scale: .8 }} >Save</motion.button>
+                            <div className='w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden cursor-pointer bg-[#be7b16]'>
+                                {user?.photoURL ? <>
+                                    <motion.img whileHover={{ scale: 1.2 }} src={user?.photoURL} alt={user?.displayName} referrerPolicy={"no-referrer"} className="w-full h-full object-cover" />
+                                </> : <>
+                                    <p className='capitalize text-2xl font-semibold p-0'>{user?.email[0]}</p>
+                                </>}
+                            </div>
+                            <motion.div whileTap={{ scale: .8 }} className="px-4 py-4 rounded-lg flex items-center justify-center bg-[#1D1D56] cursor-pointer" onClick={() => setnavMenuDisplay(!navMenuDisplay)}>
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="text-[#868CA0] " height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg>
+                            </motion.div>
+                            <AnimatePresence>
+                                {navMenuDisplay && (
+                                    <motion.div className=' bg-[#00000066] absolute top-16 right-0 px-4 py-3 rounded-lg shadow-xl z-10 flex flex-col items-start justify-start gap-4 min-w-[225px] ' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }}>
+                                        {NavMenuItems && NavMenuItems.map(item => (
+                                            <Link to={item.uri} key={item.id} className="flex items-center w-full justify-start px-2 py-2 rounded-md gap-3 text-[#868CA0] hover:bg-[#1B1B52]">
+                                                <div dangerouslySetInnerHTML={{ __html: item.svg }} className="text-lg" />
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        ))}
+                                        <motion.p className='flex items-center w-full justify-start px-2 py-2 rounded-md gap-3 text-[#868CA0] hover:bg-[#1B1B52] cursor-pointer' whileTap={{ scale: .9 }} onClick={signingOut}>
+                                            <svg viewBox="0 0 24 24" fill="currentColor" height="1em" width="1em" className="text-lg" ><path d="M4 12a1 1 0 001 1h7.59l-2.3 2.29a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00.21-.33 1 1 0 000-.76 1 1 0 00-.21-.33l-4-4a1 1 0 10-1.42 1.42l2.3 2.29H5a1 1 0 00-1 1zM17 2H7a3 3 0 00-3 3v3a1 1 0 002 0V5a1 1 0 011-1h10a1 1 0 011 1v14a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-2 0v3a3 3 0 003 3h10a3 3 0 003-3V5a3 3 0 00-3-3z"></path></svg>
+                                            Logout
+                                        </motion.p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </>}
+                </header>
+
                 <div className=''>
                     <SplitPane split='horizontal' allowResize={true} minSize={100} maxSize={100} defaultSize={"50%"}>
 
