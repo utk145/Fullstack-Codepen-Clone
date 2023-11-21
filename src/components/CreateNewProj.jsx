@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { NavMenuItems, signingOut } from '../utils/helpers';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../configuration/firebase.config';
+import Alert from './Alert';
+import { toast } from 'react-toastify';
 
 
 const CreateNewProj = () => {
@@ -39,11 +43,60 @@ const CreateNewProj = () => {
     const user = useSelector(state => state?.user?.user);
     const [navMenuDisplay, setnavMenuDisplay] = useState(false);
 
-    
+    const [alert, setAlert] = useState(false);
+
+    // Saving all of the progress to the database 
+    const saveProgress = async () => {
+        const id = Date.now();
+        const _doc = {
+            id: id,
+            title: title,
+            htmlVal: htmlVal,
+            cssVal: cssVal,
+            jsVal: jsVal,
+            finalSrcCodeOutput: finalSrcCodeOutput,
+            user: user
+        }
+        await addDoc(collection(db, "projects"), _doc).then((res) => {
+            setAlert(true);
+            toast.success('Saved!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }).catch((e) => {
+            console.log(e);
+            toast.error('An error occured', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        })
+        setInterval(() => {
+            setAlert(false);
+        }, 5000);
+    }
+
 
     return (
         <>
             <div className='flex flex-col w-screen min-h-screen items-start justify-start overflow-hidden '>
+
+                {/* alert */}
+                <AnimatePresence>
+                    {alert && <Alert />}
+                </AnimatePresence>
+
                 {/* Header section */}
                 <header className='w-full flex items-center justify-between px-12 py-4'>
                     <div className='flex items-center justify-center gap-6'>
@@ -81,7 +134,7 @@ const CreateNewProj = () => {
                     </div>
                     {user && <>
                         <div className='flex items-center justify-center gap-4 relative'>
-                            <motion.button
+                            <motion.button onClick={saveProgress}
                                 className='bg-[#868CA0] px-4 py-3 rounded-md' title="Don't forget to click this to save all of your code " whileTap={{ scale: .8 }} >Save</motion.button>
                             <div className='w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden cursor-pointer bg-[#be7b16]'>
                                 {user?.photoURL ? <>
