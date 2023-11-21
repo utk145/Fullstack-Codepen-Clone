@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, orderBy, query, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
@@ -6,6 +6,7 @@ import CreateNewProj from "./components/CreateNewProj";
 import Home from "./components/Home"
 import Loader from "./components/Loader";
 import { auth, db } from "./configuration/firebase.config"
+import { SET_PROJECTS } from "./context/actions/allProjectAction";
 import { SET_USER } from "./context/actions/userActions";
 
 
@@ -21,8 +22,8 @@ function App() {
     const unsub = auth.onAuthStateChanged(userCred => {
       if (userCred) {
         console.log(userCred?.providerData[0]);
-        // setDoc(doc(db, "users", userCred?.uid), userCred?.providerData[0])
-        addDoc(collection(db, "users"), userCred?.providerData[0])
+        setDoc(doc(db, "users", userCred?.uid), userCred?.providerData[0])
+          // addDoc(collection(db, "users"), userCred?.providerData[0])
           .then(() => {
             // Here the data will be dispatched to redux store 
             dispatch(SET_USER(userCred?.providerData[0]))

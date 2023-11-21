@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { NavMenuItems, signingOut } from '../utils/helpers';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { db } from '../configuration/firebase.config';
 import Alert from './Alert';
 import { toast } from 'react-toastify';
@@ -47,7 +47,7 @@ const CreateNewProj = () => {
 
     // Saving all of the progress to the database 
     const saveProgress = async () => {
-        const id = Date.now();
+        const id = `${Date.now()}`;
         const _doc = {
             id: id,
             title: title,
@@ -57,7 +57,7 @@ const CreateNewProj = () => {
             finalSrcCodeOutput: finalSrcCodeOutput,
             user: user
         }
-        await addDoc(collection(db, "projects"), _doc).then((res) => {
+        await setDoc(doc(db, "projects", id), _doc).then((res) => {
             setAlert(true);
             toast.success('Saved!', {
                 position: "top-right",
