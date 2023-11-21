@@ -46,6 +46,21 @@ function App() {
     */
   }, [])
 
+  
+  useEffect(() => {
+    const projQuery = query(
+      collection(db, "projects"),
+      orderBy("id", "desc")
+    )
+
+    const unsub = onSnapshot(projQuery, (querySnap) => {
+      const projectsList = querySnap.docs.map(doc => doc.data())
+      dispatch(SET_PROJECTS(projectsList))
+    })
+    return () => unsub();
+  }, [])
+
+
 
   return (
     <>

@@ -1,9 +1,14 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 const AllProjects = () => {
+  const allProjects = useSelector(state => state?.projects?.projects);
+  console.log(allProjects);
+
+
   return (
-    <div className='bg-red-700'>
-      hey
+    <div className=''>
+
     </div>
   )
 }
