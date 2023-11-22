@@ -57,9 +57,37 @@ const CreateNewProj = () => {
             finalSrcCodeOutput: finalSrcCodeOutput,
             user: user
         }
-        await setDoc(doc(db, "projects", id), _doc).then((res) => {
+        if ((title !== "Untitled" && title !== undefined && title !== null) && finalSrcCodeOutput) {
+            await setDoc(doc(db, "projects", id), _doc).then((res) => {
+                setAlert(true);
+                toast.success('Saved!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }).catch((e) => {
+                console.log(e);
+                setAlert(true);
+                toast.error('An error occured', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            })
+
+        } else {
             setAlert(true);
-            toast.success('Saved!', {
+            toast.warn('Donot leave the title and code empty', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -69,22 +97,11 @@ const CreateNewProj = () => {
                 progress: undefined,
                 theme: "dark",
             });
-        }).catch((e) => {
-            console.log(e);
-            toast.error('An error occured', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-        })
+        }
         setInterval(() => {
             setAlert(false);
         }, 5000);
+
     }
 
 
