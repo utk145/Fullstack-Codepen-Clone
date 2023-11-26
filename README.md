@@ -45,4 +45,11 @@ Please note that I do not own [Codepen](codepen.io) or any of its affiliated ent
 
 
 Keep Codin' :)
+---
+
+
+![Screenshot (32)](https://github.com/utk145/Fullstack-Codepen-Clone/assets/122993091/9f5bcc91-0017-4cfb-9327-5b75735c295f)
+![Screenshot (33)](https://github.com/utk145/Fullstack-Codepen-Clone/assets/122993091/1884ae0d-25ad-47e9-885e-a51750aa7644)
+![Screenshot (34)](https://github.com/utk145/Fullstack-Codepen-Clone/assets/122993091/047edb0e-abb7-4134-a606-2499292ba655)
+
 
