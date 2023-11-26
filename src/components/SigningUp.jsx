@@ -24,7 +24,7 @@ const SigningUp = () => {
             await createUserWithEmailAndPassword(auth, email, password)
                 .then(userCred => {
                     if (userCred) {
-                        console.log(userCred.user);
+                        // console.log(userCred.user);
                     }
                 })
                 .catch((error) => console.log(error.message))
@@ -37,7 +37,7 @@ const SigningUp = () => {
             await signInWithEmailAndPassword(auth, email, password)
                 .then(useCred => {
                     if (useCred) {
-                        console.log(useCred);
+                        // console.log(useCred);
                         navigate("/home", { replace: true });
                     }
                 })

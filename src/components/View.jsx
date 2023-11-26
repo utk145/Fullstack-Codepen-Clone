@@ -69,10 +69,10 @@ const View = () => {
                     <div className='flex items-center justify-center gap-4 relative'>
 
                         <div className='w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden cursor-pointer bg-[#be7b16]'>
-                            {project?.user?.photoURL ? <>
-                                <motion.img whileHover={{ scale: 1.2 }} src={project?.user?.photoURL} alt={project?.user?.displayName} referrerPolicy={"no-referrer"} className="w-full h-full object-cover" />
+                            {user?.photoURL ? <>
+                                <motion.img whileHover={{ scale: 1.2 }} src={user?.photoURL} alt={user?.displayName} referrerPolicy={"no-referrer"} className="w-full h-full object-cover" />
                             </> : <>
-                                <p className='capitalize text-2xl font-semibold p-0'>{project?.user?.email[0]}</p>
+                                <p className='capitalize text-2xl font-semibold p-0'>{user?.email[0]}</p>
                             </>}
                         </div>
                         <motion.div whileTap={{ scale: .8 }} className="px-4 py-4 rounded-lg flex items-center justify-center bg-[#1D1D56] cursor-pointer" onClick={() => setnavMenuDisplay(!navMenuDisplay)}>
