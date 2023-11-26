@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const ProjectCard = ({ proj, index }) => {
     const { cssVal, user, finalSrcCodeOutput, title, id, htmlVal, jsVal } = proj;
     const { displayName, email, uid, phoneNumber, photoURL, providerId } = user;
-
+    const navigate = useNavigate();
     return (
-        <motion.div key={index} className='w-full cursor-pointer md:w-[450px] h-[375px] bg-[#09094d] rounded-xl p-4 flex flex-col items-center justify-center gap-4 text-[#808198]' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .5, delay: index * .3 }}>
+        <motion.div key={index} onClick={()=>navigate(`/view/${id}`)} className='w-full cursor-pointer md:w-[450px] h-[375px] bg-[#09094d] rounded-xl p-4 flex flex-col items-center justify-center gap-4 text-[#808198]' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .5, delay: index * .3 }}>
             <div className='bg-[#26276E] w-full h-full rounded-md overflow-hidden' style={{ overflow: "hidden", height: "100%", width: "100%" }}>
                 <iframe
                     srcDoc={finalSrcCodeOutput}

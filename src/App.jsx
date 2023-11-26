@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 import CreateNewProj from "./components/CreateNewProj";
 import Home from "./components/Home"
 import Loader from "./components/Loader";
+import View from "./components/View";
 import { auth, db } from "./configuration/firebase.config"
 import { SET_PROJECTS } from "./context/actions/allProjectAction";
 import { SET_USER } from "./context/actions/userActions";
@@ -74,6 +75,7 @@ function App() {
           <Routes>
             <Route path="/home/*" element={<Home />} />
             <Route path='/create' element={<CreateNewProj />} />
+            <Route path='view/:id' element={<View />} />
 
 
 
