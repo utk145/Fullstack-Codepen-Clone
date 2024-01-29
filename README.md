@@ -1,5 +1,5 @@
 
-# Fullstack CodePen Clone 
+# Fullstack Codepen Clone 
 
 This is a fullstack CodePen clone built using Vite, Tailwindcss, Firebase. With this application users can write, execute and share HTML, CSS, and JavaScript code snippets in real-time.
 
